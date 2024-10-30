@@ -1,0 +1,158 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        {% if obj %}
+        <form method="POST" class="form-inline" action="{% url 'inv:producto_edit' obj.pk %}" enctype="multipart/form-data" >
+        {% else %}
+        <form method="POST" class="form-inline" action="{% url 'inv:producto_new' %}"  enctype="multipart/form-data" >
+        {% endif %}
+            <div class="col-xl-12 col-md-12 mb-12">
+                {% if obj %}
+                <div class="card shadow h-100 w-100 py-2">
+                {% else %}
+                <div class="card shadow h-100 w-100 py-2">
+                {% endif %}
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            {% if obj %} Editar {% else %} Nueva {% endif %} Producto
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        {% csrf_token %}
+                        <div class="row">
+                            {#{ form.as_p }#}
+                        </div>
+                        <div class="row justify-content-around mb-3">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.codigo.label}}</div>
+                                    <div>{{form.codigo}}</div>
+                                </div>
+                            </div>
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.codigo_barra.label}}</div>
+                                    <div>{{form.codigo_barra}}</div>    
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="row justify-content-around mb-3">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.descripcion.label}}</div>
+                                    <div>{{form.descripcion}}</div>
+                                </div>
+                            </div>
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.precio.label}}</div>
+                                    <div>{{form.precio}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row justify-content-around mb-3">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.existencia.label}}</div>
+                                    <div>{{form.existencia}}</div>    
+                                </div>
+                            </div>                            
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.ultima_compra.label}}</div>
+                                    <div>{{form.ultima_compra}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around mb-3">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.marca.label}}</div>
+                                    <div>{{form.marca}}</div>    
+                                </div>
+                            </div>                       
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">{{form.unidad_medida.label}}</div>
+                                    <div>{{form.unidad_medida}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">Categoría</div>
+                                    <select name="categoria" id="id_categoria" class="form-control from-control-sm">
+                                        <option value="0">-------</option>
+                                        {% for item in categorias %}
+                                        <option value="{{item.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="mr-2">Sub Categoría</div>
+                                    <select name="subcategoria" id="id_subcategoria" class="form-control from-control-sm">
+                                        <option value="0">-------</option>
+                                        {% for item in subcategorias %}
+                                        <option value="{{item.id}}" data-chained="{{item.categoria.id}}">{{item.descripcion}}</option>
+                                        {% endfor%}
+                                    </select>
+                                </div>
+                            </div>                           
+                        </div>
+                        <div class="row justify-content-around">
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div>
+                                        {{form.foto.label}}
+                                    </div>
+                                    <div>
+                                        {% if obj.foto %}
+                                        <img src="{{obj.foto.url}}" width="100%" alt="">
+                                        {% endif %}
+                                    </div>
+                                    {% if obj %}
+                                    {% else %}
+                                    <div>
+                                        <input type="file" name="foto" id="id_foto" accept="image/*">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row col-md-6 align-items-center justify-content-center">
+                                <div>
+                                    <div class="form-group">
+                                        <label for="id_estado">Estado</label>
+                                        <input type="checkbox" name="estado" class="form-control mx-2" id="id_estado"
+                                        {% if obj.estado %} checked {% endif %} >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+                        <div class="row justify-content-center">
+                            <div>
+                                <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button>
+                                <button type="button" class="btn btn-success" onclick="return cerrar_modal()"> Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#id_categoria").val("{{ obj.subcategoria.categoria.id }}").change();
+        $("#id_subcategoria").val("{{ obj.subcategoria.id }}").change();
+        $("#id_subcategoria").chained("#id_categoria");
+    });
+</script>
